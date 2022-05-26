@@ -52,10 +52,13 @@ def gamechoice():
     pygame.display.update()
     clock.tick(20)
 
-def enter_word():
+def one_player():
+  hangman(get_word())
+
+def two_player():
   word = ""
   def return_word():
-    return word
+    hangman(word)
   while True:
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
@@ -63,29 +66,21 @@ def enter_word():
       elif event.type == pygame.KEYDOWN:
         if pygame.key.name(event.key) == "backspace":
           word = word.rstrip(word[-1])
-          #finish
-
-def one_player():
-  hangman(get_word())
-
-def two_player():
-  hangman("placeholder")
+        else:
+          word += pygame.key.name(event.key)
+    
+    screen.fill(background)
+    text = pygame.font.SysFont("Corbel",40)
+    text_surface = text.render(word, True, black)
+    text_rect = text_surface.get_rect()
+    text_rect.center = ((width/2),(height/2))
+    screen.blit(text_surface, text_rect)
+    button("Start Game",((width/2)-100),((height/3)*2),200,50,button_light,button_dark,return_word)
+    pygame.display.update()
+    clock.tick(20)
 
 def hangman(word):
   print(word)
 
 pygame.init()
-word = ""
-while True:
-  for event in pygame.event.get():
-    if event.type == pygame.QUIT:
-      pygame.quit()
-    elif event.type == pygame.KEYDOWN:
-      print(pygame.key.name(event.key))
-      if pygame.key.name(event.key) == "return":
-        print(word)
-      else:
-        word += pygame.key.name(event.key)
-      
-      
-     
+gamechoice()
