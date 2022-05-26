@@ -13,6 +13,17 @@ height = 600
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((width, height))
 
+def get_word():
+  import random
+  lines = []
+  f = open('words.txt', 'r')
+  for x in f:
+    x = x.strip('\n')
+    lines.append(x)
+  randnumber = random.randint(0,len(lines) - 1)
+  lines.pop(len(lines) - 1)
+  return lines[randnumber].upper()
+
 def button(word,x,y,w,h,ic,ac,action=None):
   mouse = pygame.mouse.get_pos()
   click = pygame.mouse.get_pressed()
@@ -24,26 +35,31 @@ def button(word,x,y,w,h,ic,ac,action=None):
   else:
     pygame.draw.rect(screen,ic,(x,y,w,h))
 
-  buttonText = pygame.font.SysFont("Corbel",40)
-  buttonTextSurf = buttonText.render(word, True, black)
-  buttonTextRect = buttonTextSurf.get_rect()
-  buttonTextRect.center = ((x+(w/2)), (y+(h/2)))
-  screen.blit(buttonTextSurf, buttonTextRect)
+  text = pygame.font.SysFont("Corbel",40)
+  text_surface = text.render(word, True, black)
+  text_rect = text_surface.get_rect()
+  text_rect.center = ((x+(w/2)), (y+(h/2)))
+  screen.blit(text_surface, text_rect)
 
 def gamechoice():
-  print("Hello World")
+  while True:
+    for event in pygame.event.get():
+      if event.type == pygame.QUIT:
+        pygame.quit()
+    screen.fill(background)
+    button("1 Player",(width/5),(height/2),200,50,button_light,button_dark,one_player)
+    button("2 Player",((width/5)*3),(height/2),200,50,button_light,button_dark,two_player)
+    pygame.display.update()
+    clock.tick(20)
+
+def one_player():
+  hangman()
+
+def two_player():
+  hangman()
 
 def hangman():
-  print("success!!!!")
+  print(get_word())
 
 pygame.init()
-while True:
-  
-  for event in pygame.event.get():
-    if event.type == pygame.QUIT:
-      pygame.quit()
-      
-  screen.fill(background)
-  button('test',100,100,200,50,button_light,button_dark,hangman)
-  pygame.display.update()
-  clock.tick(30)
+gamechoice()
