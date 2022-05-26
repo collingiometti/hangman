@@ -52,14 +52,40 @@ def gamechoice():
     pygame.display.update()
     clock.tick(20)
 
+def enter_word():
+  word = ""
+  def return_word():
+    return word
+  while True:
+    for event in pygame.event.get():
+      if event.type == pygame.QUIT:
+        pygame.quit()
+      elif event.type == pygame.KEYDOWN:
+        if pygame.key.name(event.key) == "backspace":
+          word = word.rstrip(word[-1])
+          #finish
+
 def one_player():
-  hangman()
+  hangman(get_word())
 
 def two_player():
-  hangman()
+  hangman("placeholder")
 
-def hangman():
-  print(get_word())
+def hangman(word):
+  print(word)
 
 pygame.init()
-gamechoice()
+word = ""
+while True:
+  for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+      pygame.quit()
+    elif event.type == pygame.KEYDOWN:
+      print(pygame.key.name(event.key))
+      if pygame.key.name(event.key) == "return":
+        print(word)
+      else:
+        word += pygame.key.name(event.key)
+      
+      
+     
