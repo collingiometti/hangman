@@ -2,6 +2,7 @@
 
 import pygame
 import sys
+pygame.init()
 
 black = (0,0,0)
 background = (166,191,188)
@@ -11,6 +12,7 @@ button_dark = (193,199,199)
 width = 800
 height = 600
 clock = pygame.time.Clock()
+fps = 10
 screen = pygame.display.set_mode((width, height))
 
 def get_word():
@@ -50,7 +52,7 @@ def gamechoice():
     button("1 Player",(width/5),(height/2),200,50,button_light,button_dark,one_player)
     button("2 Player",((width/5)*3),(height/2),200,50,button_light,button_dark,two_player)
     pygame.display.update()
-    clock.tick(20)
+    clock.tick(fps)
 
 def one_player():
   hangman(get_word())
@@ -77,10 +79,54 @@ def two_player():
     screen.blit(text_surface, text_rect)
     button("Start Game",((width/2)-100),((height/3)*2),200,50,button_light,button_dark,return_word)
     pygame.display.update()
-    clock.tick(20)
+    clock.tick(fps)
+
+states = [
+  pygame.image.load('no_guesses_left.png'),
+  pygame.image.load('one_guess_left.png'),
+  pygame.image.load('two_guesses_left.png'),
+  pygame.image.load('three_guesses_left.png'),
+  pygame.image.load('four_guesses_left.png'),
+  pygame.image.load('five_guesses_left.png'),
+  pygame.image.load('six_guesses_left.png'),
+  pygame.image.load('seven_guesses_left.png')
+  ]
 
 def hangman(word):
+  guesses_left = 7
+  incorrect_guesses = []
+  guess = ""
+  for i in range(len(word)):
+    guess += "_"
+  while True:
+    for event in pygame.event.get():
+      if event.type == pygame.QUIT:
+        pygame.quit()
+      elif event.type == pygame.KEYDOWN:
+        guessed_letter = pygame.key.name(event.key)
+        if guessed_letter in incorrect_guesses == False:
+          if guessed_letter in word:
+            for i in word:
+              if word[i] == guessed_letter:
+                guess[i] = guessed_letter
+            if guess == word:
+              print("win game")
+          else:
+            incorrect_guesses.append(guessed_letter)
+            guesses_left -= 1
+            if guesses_left == 0:
+              print("lose game")
+        
   print(word)
 
-pygame.init()
-gamechoice()
+
+testword = "hello"
+for i in testword:
+  print(i)
+screen.fill(background)
+screen.blit(states[5],(0,110))
+pygame.display.update()
+while True:
+  for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+      pygame.quit()
