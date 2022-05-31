@@ -98,17 +98,21 @@ def hangman(word):
   guess = ""
   for i in range(len(word)):
     guess += "_"
+  print(guess)
   while True:
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
         pygame.quit()
       elif event.type == pygame.KEYDOWN:
         guessed_letter = pygame.key.name(event.key)
-        if guessed_letter in incorrect_guesses == False:
+        if guessed_letter not in incorrect_guesses:
           if guessed_letter in word:
-            for i in word:
+            for i in range(len(word)):
               if word[i] == guessed_letter:
-                guess[i] = guessed_letter
+                guess_list = list(guess)
+                guess_list[i] = guessed_letter
+                guess = ''.join(guess_list)
+                print(guess)
             if guess == word:
               print("win game")
           else:
@@ -119,14 +123,4 @@ def hangman(word):
         
   print(word)
 
-
-testword = "hello"
-for i in testword:
-  print(i)
-screen.fill(background)
-screen.blit(states[5],(0,110))
-pygame.display.update()
-while True:
-  for event in pygame.event.get():
-    if event.type == pygame.QUIT:
-      pygame.quit()
+gamechoice()
