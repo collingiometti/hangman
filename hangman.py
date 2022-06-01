@@ -24,7 +24,7 @@ def get_word():
     lines.append(x)
   randnumber = random.randint(0,len(lines) - 1)
   lines.pop(len(lines) - 1)
-  return lines[randnumber].upper()
+  return lines[randnumber].lower()
 
 def button(word,x,y,w,h,ic,ac,action=None):
   mouse = pygame.mouse.get_pos()
@@ -68,12 +68,13 @@ def two_player():
       elif event.type == pygame.KEYDOWN:
         if pygame.key.name(event.key) == "backspace":
           word = word.rstrip(word[-1])
+        elif pygame.key.name(event.key) == "return":
+          return_word()
         else:
           word += pygame.key.name(event.key)
     
     screen.fill(background)
-    text = pygame.font.SysFont("Corbel",40)
-    text_surface = text.render(word, True, black)
+    text_surface = pygame.font.SysFont("Corbel",40).render(word, True, black)
     text_rect = text_surface.get_rect()
     text_rect.center = ((width/2),(height/2))
     screen.blit(text_surface, text_rect)
@@ -89,11 +90,12 @@ states = [
   pygame.image.load('four_guesses_left.png'),
   pygame.image.load('five_guesses_left.png'),
   pygame.image.load('six_guesses_left.png'),
-  pygame.image.load('seven_guesses_left.png')
+  pygame.image.load('seven_guesses_left.png'),
+  pygame.image.load('eight_guesses_left.png')
   ]
 
 def hangman(word):
-  guesses_left = 7
+  guesses_left = 8
   incorrect_guesses = []
   guess = ""
   for i in range(len(word)):
@@ -121,6 +123,14 @@ def hangman(word):
             if guesses_left == 0:
               print("lose game")
         
+    screen.fill(background)
+    screen.blit(states[guesses_left],(10,100))
+    guesses_left_surf = pygame.font.SysFont("Corbel",40).render("Guesses Left: " + str(guesses_left), True, black)
+    guesses_left_rect = guesses_left_surf.get_rect()
+    guesses_left_rect.center = (160,70)
+    screen.blit(guesses_left_surf, guesses_left_rect)
+    pygame.display.update()
+    clock.tick(fps)
   print(word)
 
 gamechoice()
