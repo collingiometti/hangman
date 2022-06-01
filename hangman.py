@@ -101,7 +101,7 @@ def hangman(word):
     for j in range(len(word)):
       phrase.append("_ ")
     def return_phrase():
-      str_phrase = ''.join(phrase)
+      str_phrase = ''.join(phrase).replace(" ","")
       if str_phrase == word:
         print("win game")
       else:
