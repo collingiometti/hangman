@@ -78,7 +78,7 @@ def two_player():
     text_rect = text_surface.get_rect()
     text_rect.center = ((width/2),(height/2))
     screen.blit(text_surface, text_rect)
-    button("Start Game",((width/2)-100),((height/3)*2),200,50,button_light,button_dark,return_word)
+    button("Enter",((width/2)-100),((height/3)*2),200,50,button_light,button_dark,return_word)
     pygame.display.update()
     clock.tick(fps)
 
@@ -95,6 +95,41 @@ states = [
   ]
 
 def hangman(word):
+  def guess_word():
+    phrase = []
+    i = 0
+    for j in range(len(word)):
+      phrase.append("_")
+    def return_phrase():
+      str_phrase = ''.join(phrase)
+      if str_phrase == word:
+        print("win game")
+      else:
+        print("lose game")
+    while True:
+      for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+          pygame.quit()
+        elif event.type == pygame.KEYDOWN:
+          if pygame.key.name(event.key) == "backspace":
+            phrase[i-1] = "_"
+            i -= 1
+          elif pygame.key.name(event.key) == "return":
+            return_phrase()
+          else:
+            phrase[i] = pygame.key.name(event.key)
+            i+=1
+            
+      screen.fill(background)
+      str_phrase = ''.join(phrase)
+      text_surface = pygame.font.SysFont("Corbel",40).render(str_phrase, True, black)
+      text_rect = text_surface.get_rect()
+      text_rect.center = ((width/2),(height/2))
+      screen.blit(text_surface, text_rect)
+      button("Enter",((width/2)-100),((height/3)*2),200,50,button_light,button_dark,return_phrase)
+      pygame.display.update()
+      clock.tick(fps)
+          
   guesses_left = 8
   incorrect_guesses = []
   guess = ""
@@ -129,8 +164,10 @@ def hangman(word):
     guesses_left_rect = guesses_left_surf.get_rect()
     guesses_left_rect.center = (160,70)
     screen.blit(guesses_left_surf, guesses_left_rect)
+    button("Guess Word",400,300,200,50,button_light,button_dark,guess_word)
     pygame.display.update()
     clock.tick(fps)
   print(word)
+  
 
 gamechoice()
