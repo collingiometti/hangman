@@ -99,7 +99,7 @@ def hangman(word):
     phrase = []
     i = 0
     for j in range(len(word)):
-      phrase.append("_")
+      phrase.append("_ ")
     def return_phrase():
       str_phrase = ''.join(phrase)
       if str_phrase == word:
@@ -112,12 +112,12 @@ def hangman(word):
           pygame.quit()
         elif event.type == pygame.KEYDOWN:
           if pygame.key.name(event.key) == "backspace":
-            phrase[i-1] = "_"
+            phrase[i-1] = "_ "
             i -= 1
           elif pygame.key.name(event.key) == "return":
             return_phrase()
           else:
-            phrase[i] = pygame.key.name(event.key)
+            phrase[i] = pygame.key.name(event.key) + " "
             i+=1
             
       screen.fill(background)
