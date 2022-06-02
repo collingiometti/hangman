@@ -50,6 +50,12 @@ def gamechoice():
       if event.type == pygame.QUIT:
         pygame.quit()
     screen.fill(background)
+    
+    title_surf = pygame.font.SysFont("Corbel",110).render("Hangman!", True, black)
+    title_rect = title_surf.get_rect()
+    title_rect.center = (400,200)
+    screen.blit(title_surf, title_rect)  
+    
     button("1 Player",(width/5),(height/2),200,50,button_light,button_dark,one_player)
     button("2 Player",((width/5)*3),(height/2),200,50,button_light,button_dark,two_player)
     pygame.display.update()
@@ -116,10 +122,11 @@ def hangman(word):
       text_rect.center = (520,300)
       screen.blit(text_surf, text_rect)
       
-      button("Play Again",500,400,200,50,button_light,button_dark,gamechoice)
+      button("Play Again",425,370,200,50,button_light,button_dark,gamechoice)
       
       pygame.display.update()
       clock.tick(fps)
+      
   def guess_word():
     phrase = []
     i = 0
