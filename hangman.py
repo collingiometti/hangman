@@ -27,6 +27,13 @@ def get_word():
   lines.pop(len(lines) - 1)
   return lines[randnumber].lower()
 
+def write(word,size,x,y,color):
+  text_surf = pygame.font.SysFont("Corbel",size).render(word,True,color)
+  text_rect = text_surf.get_rect()
+  text_rect.center = (x,y)
+  screen.blit(text_surf,text_rect)
+  
+
 def button(word,x,y,w,h,ic,ac,action=None):
   mouse = pygame.mouse.get_pos()
   click = pygame.mouse.get_pressed()
@@ -37,12 +44,9 @@ def button(word,x,y,w,h,ic,ac,action=None):
       action()
   else:
     pygame.draw.rect(screen,ic,(x,y,w,h))
-
-  text = pygame.font.SysFont("Corbel",40)
-  text_surface = text.render(word, True, black)
-  text_rect = text_surface.get_rect()
-  text_rect.center = ((x+(w/2)), (y+(h/2)))
-  screen.blit(text_surface, text_rect)
+    
+  write(word,40,(x+(w/2)),(y+(h/2)),black)
+  
 
 def gamechoice():
   while True:
@@ -51,13 +55,11 @@ def gamechoice():
         pygame.quit()
     screen.fill(background)
     
-    title_surf = pygame.font.SysFont("Corbel",110).render("Hangman!", True, black)
-    title_rect = title_surf.get_rect()
-    title_rect.center = (400,200)
-    screen.blit(title_surf, title_rect)  
+    write("Hangman!",110,400,200,black)
     
     button("1 Player",(width/5),(height/2),200,50,button_light,button_dark,one_player)
     button("2 Player",((width/5)*3),(height/2),200,50,button_light,button_dark,two_player)
+    
     pygame.display.update()
     clock.tick(fps)
 
@@ -81,10 +83,9 @@ def two_player():
           word += pygame.key.name(event.key)
     
     screen.fill(background)
-    text_surface = pygame.font.SysFont("Corbel",40).render(word, True, black)
-    text_rect = text_surface.get_rect()
-    text_rect.center = ((width/2),(height/2))
-    screen.blit(text_surface, text_rect)
+    
+    write(word,40,(width/2),(height/2),black)
+    
     button("Enter",((width/2)-100),((height/3)*2),200,50,button_light,button_dark,return_word)
     pygame.display.update()
     clock.tick(fps)
@@ -112,15 +113,9 @@ def hangman(word):
       
       screen.blit(states[guesses_left],(10,100))
       
-      title_surf = pygame.font.SysFont("Corbel",110).render(("You " + result + "!"), True, black)
-      title_rect = title_surf.get_rect()
-      title_rect.center = (520,200)
-      screen.blit(title_surf, title_rect)   
+      write(("You " + result + "!"),110,520,200,black)
       
-      text_surf = pygame.font.SysFont("Corbel",50).render(("the word was " + word.upper()), True, black)
-      text_rect = text_surf.get_rect()
-      text_rect.center = (520,300)
-      screen.blit(text_surf, text_rect)
+      write(("the word was " + word.upper()),50,520,300,black)
       
       button("Play Again",425,370,200,50,button_light,button_dark,gamechoice)
       
@@ -153,11 +148,9 @@ def hangman(word):
             i+=1
             
       screen.fill(background)
-      str_phrase = ''.join(phrase).replace(""," ")
-      text_surface = pygame.font.SysFont("Corbel",40).render(str_phrase, True, black)
-      text_rect = text_surface.get_rect()
-      text_rect.center = ((width/2),(height/2))
-      screen.blit(text_surface, text_rect)
+      
+      write(''.join(phrase).replace(""," "),40,(width/2),(height/2),black)
+      
       button("Enter",((width/2)-100),((height/3)*2),200,50,button_light,button_dark,return_phrase)
       pygame.display.update()
       clock.tick(fps)
@@ -190,23 +183,16 @@ def hangman(word):
         
     screen.fill(background)
     screen.blit(states[guesses_left],(10,100))
-    guesses_left_surf = pygame.font.SysFont("Corbel",40).render("Guesses Left: " + str(guesses_left), True, black)
-    guesses_left_rect = guesses_left_surf.get_rect()
-    guesses_left_rect.center = (160,70)
-    screen.blit(guesses_left_surf, guesses_left_rect)
     
-    guess_surf = pygame.font.SysFont("Corbel",70).render(guess.replace(""," "), True, black)
-    guess_rect = guess_surf.get_rect()
-    guess_rect.center = (520,220)
-    screen.blit(guess_surf, guess_rect)   
+    write(("Guesses Left: " + str(guesses_left)),40,160,70,black)
+    
+    write(guess.replace(""," "),70,520,220,black)
     
     button("Guess Word",420,300,200,50,button_light,button_dark,guess_word)
     
     pygame.draw.rect(screen,black,(30,480,740,90),5)
-    incorrect_surf = pygame.font.SysFont("Corbel",80).render(''.join(incorrect_guesses).replace("","  "), True, red)
-    incorrect_rect = incorrect_surf.get_rect()
-    incorrect_rect.center = (400,525)
-    screen.blit(incorrect_surf, incorrect_rect)
+    
+    write((''.join(incorrect_guesses).replace("","  ")),80,400,525,red)
     
     pygame.display.update()
     clock.tick(fps)
