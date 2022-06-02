@@ -96,6 +96,30 @@ states = [
   ]
 
 def hangman(word):
+  def end_game(result):
+    while True:
+      for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+          pygame.quit()
+          
+      screen.fill(background)
+      
+      screen.blit(states[guesses_left],(10,100))
+      
+      title_surf = pygame.font.SysFont("Corbel",110).render(("You " + result + "!"), True, black)
+      title_rect = title_surf.get_rect()
+      title_rect.center = (520,200)
+      screen.blit(title_surf, title_rect)   
+      
+      text_surf = pygame.font.SysFont("Corbel",50).render(("the word was " + word.upper()), True, black)
+      text_rect = text_surf.get_rect()
+      text_rect.center = (520,300)
+      screen.blit(text_surf, text_rect)
+      
+      button("Play Again",500,400,200,50,button_light,button_dark,gamechoice)
+      
+      pygame.display.update()
+      clock.tick(fps)
   def guess_word():
     phrase = []
     i = 0
@@ -104,9 +128,9 @@ def hangman(word):
     def return_phrase():
       str_phrase = ''.join(phrase)
       if str_phrase == word:
-        print("win game")
+        end_game("Win")
       else:
-        print("lose game")
+        end_game("Lose")
     while True:
       for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -136,7 +160,6 @@ def hangman(word):
   guess = ""
   for i in range(len(word)):
     guess += "_"
-  print(guess)
   while True:
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
@@ -151,12 +174,12 @@ def hangman(word):
                 guess_list[i] = guessed_letter
                 guess = ''.join(guess_list)
             if guess == word:
-              print("win game")
+              end_game("Win")
           else:
             incorrect_guesses.append(guessed_letter)
             guesses_left -= 1
             if guesses_left == 0:
-              print("lose game")
+              end_game("Lose")
         
     screen.fill(background)
     screen.blit(states[guesses_left],(10,100))
