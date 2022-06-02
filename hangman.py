@@ -4,18 +4,19 @@ import pygame
 import sys
 pygame.init()
 
+# initialize variables
 black = (0,0,0)
 red = (163,73,67)
 background = (166,191,188)
 button_light = (218,224,224)
 button_dark = (193,199,199)
-
 width = 800
 height = 600
 clock = pygame.time.Clock()
 fps = 10
 screen = pygame.display.set_mode((width, height))
 
+# get random word function
 def get_word():
   import random
   lines = []
@@ -27,13 +28,14 @@ def get_word():
   lines.pop(len(lines) - 1)
   return lines[randnumber].lower()
 
+# write function
 def write(word,size,x,y,color):
   text_surf = pygame.font.SysFont("Corbel",size).render(word,True,color)
   text_rect = text_surf.get_rect()
   text_rect.center = (x,y)
   screen.blit(text_surf,text_rect)
   
-
+# button function
 def button(word,x,y,w,h,ic,ac,action=None):
   mouse = pygame.mouse.get_pos()
   click = pygame.mouse.get_pressed()
@@ -47,7 +49,7 @@ def button(word,x,y,w,h,ic,ac,action=None):
     
   write(word,40,(x+(w/2)),(y+(h/2)),black)
   
-
+# initial game choice function
 def gamechoice():
   while True:
     for event in pygame.event.get():
@@ -63,9 +65,11 @@ def gamechoice():
     pygame.display.update()
     clock.tick(fps)
 
+# single player
 def one_player():
   hangman(get_word())
 
+# two player
 def two_player():
   word = ""
   def return_word():
@@ -102,7 +106,9 @@ states = [
   pygame.image.load('eight_guesses_left.png')
   ]
 
+# hangman game function
 def hangman(word):
+  # Result of game
   def end_game(result):
     while True:
       for event in pygame.event.get():
@@ -121,7 +127,8 @@ def hangman(word):
       
       pygame.display.update()
       clock.tick(fps)
-      
+    
+  # Guess phrase function
   def guess_word():
     phrase = []
     i = 0
@@ -154,12 +161,14 @@ def hangman(word):
       button("Enter",((width/2)-100),((height/3)*2),200,50,button_light,button_dark,return_phrase)
       pygame.display.update()
       clock.tick(fps)
-          
+        
   guesses_left = 8
   incorrect_guesses = []
   guess = ""
   for i in range(len(word)):
     guess += "_"
+  
+  #main game loop
   while True:
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
@@ -197,5 +206,5 @@ def hangman(word):
     pygame.display.update()
     clock.tick(fps)
   
-
+# begin game
 gamechoice()
