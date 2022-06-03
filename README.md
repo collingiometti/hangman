@@ -1,3 +1,3 @@
 # Hangman
 
-Simple hangman game made in pygame. Made for CS class.
+Simple hangman game made in pygame made as a project for CS class. Not a lot of exception handling.
